@@ -12,7 +12,17 @@
 		<link href="../../css/bootstrap.min.css" rel="stylesheet" type="text/css">
 	</head>
 	<body>
-		
+		<div class="container-fluid ">
+			<div class="container-sm text-center">
+				
+				<p class="h1">MENU</p>
+				<div class="btn-group">
+					<button type="button" class="btn btn-outline-primary"><a class="nav-link text-dark" href='films.php'>back</a></button>
+				</div>
+				
+				
+			</div>
+		</div>
 		<div class="container-fluid  ">
 			<div class="container-sm" >
 				<h1> ADD Film</h1>

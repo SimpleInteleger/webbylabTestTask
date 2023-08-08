@@ -14,6 +14,28 @@
 		<link href="../../css/bootstrap.min.css" rel="stylesheet" type="text/css">
 	</head>
 	<body>
+	<div class="container-fluid ">
+			<div class="container-sm text-center">
+				
+				<p class="h1">MENU</p>
+				<div class="btn-group">
+					<button type="button" class="btn btn-outline-primary"><a class="nav-link text-dark" href='index.php'>back</a></button>
+					<button type="button" class="btn btn-outline-primary"><a class="nav-link text-dark" href='import.php'>import from file</a></button>
+				</div>
+				
+				
+			</div>
+		</div>
+	<div class="container-fluid bg-warning pop_up_choice pop_up_choice_js" >
+				<div class="container-md text-center  p-5">
+					
+					<p class="h1">Are you sure ?</p>
+					<button id="yes_button" class="btn btn-outline-danger btn-lg">YES</button>
+					<button id="no_button" class="btn btn-outline-success btn-lg">NO</button>
+					
+					
+				</div>
+			</div>
 		<?php if(isset($_GET["added"])) { ?>
 			<div class="container-fluid bg-success pop_up_message pop_up_message_js" >
 				<div class="container-md text-center  p-5">

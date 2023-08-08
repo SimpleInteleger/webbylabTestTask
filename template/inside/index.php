@@ -18,10 +18,10 @@
 			<div class="container-sm text-center">
 				
 				<p class="h1">Menu</p>
-				<div class="btn-group-vertical">
+				<div class="btn-group">
 					<button type="button" class="btn btn-outline-primary"><a class="nav-link text-dark" href='films.php'>films</a></button>
 					<button type="button" class="btn btn-outline-primary"><a class="nav-link text-dark" href='../../assets/site/php/admin/index.php'>admin</a></button>
-				</div>
+					</div>
 				
 				
 			</div>

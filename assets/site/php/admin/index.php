@@ -18,9 +18,10 @@
 			<div class="container-sm text-center">
 				
 				<p class="h1">ADMIN MENU</p>
-				<div class="btn-group-vertical">
+				<div class="btn-group">
 					<button type="button" class="btn btn-outline-primary"><a class="nav-link text-dark" href='films.php'>films list</a></button>
 					<button type="button" class="btn btn-outline-primary"><a class="nav-link text-dark" href='import.php'>import from file</a></button>
+					<button type="button" class="btn btn-outline-primary"><a class="nav-link text-dark" href='../../../../template/inside/index.php'>back</a></button>
 				</div>
 				
 				
