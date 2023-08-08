@@ -14,7 +14,7 @@
 		<link href="../../css/bootstrap.min.css" rel="stylesheet" type="text/css">
 	</head>
 	<body>
-	<?php if(isset($_GET["added"])) { ?>
+		<?php if(isset($_GET["added"])) { ?>
 			<div class="container-fluid bg-success pop_up_message pop_up_message_js" >
 				<div class="container-md text-center  p-5">
 					
@@ -56,7 +56,16 @@
 				</form>
 				<a href="add_film.php" target="_black"><button type="button" class="btn btn-outline-success btn-lg">ADD</button></a>
 				<div class="container text-center">
-					
+					<div class="container-fluid bg-warning pop_up_choice pop_up_choice_js" >
+						<div class="container-md text-center  p-5">
+							
+							<p class="h1">Are you sure ?</p>
+							<button id="yes_button" class="btn btn-outline-danger btn-lg">YES</button>
+							<button id="no_button" class="btn btn-outline-success btn-lg">NO</button>
+							
+							
+						</div>
+					</div>
 					<?php 	
 						if(isset($_GET["delid"])){
 							$films->DelFilm($_GET["delid"]);
@@ -84,5 +93,5 @@
 		<script src="../../../lib/js/jquery-3.5.1.min.js"></script>
 		<script src="../../js/scripts.js"></script>
 		<script src="../../js/bootstrap.bundle.min.js"></script>
-		</body>
-						</html>									
+	</body>
+</html>									

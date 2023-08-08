@@ -4,3 +4,10 @@
 	left:0px;
 	z-index:1;
 }
+.pop_up_choice{
+	display:none;
+}
+	.pop_up_choice button{
+		display:inline-block;
+		margin:5px;
+	}
