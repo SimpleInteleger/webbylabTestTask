@@ -24,7 +24,7 @@
 					</div>
 					<div >
 						<label for="Year">Year:</label>
-						<input type="number" placeholder="YYYY" min="1" class="form-control" id="year"  name="year">
+						<input type="number" placeholder="YYYY" min="1850" max="2023" class="form-control" id="year"  name="year">
 						
 					</div>
 					<div >
