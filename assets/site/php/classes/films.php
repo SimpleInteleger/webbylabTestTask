@@ -7,6 +7,11 @@
 			
 			$this->db = $db;
 		}
+		public function SafetyEnter($string){
+		$safestring = addslashes($string);
+		$safestring = htmlspecialchars($safestring, ENT_QUOTES); 
+		return $safestring;
+			}
 		public function ShowFilm($id){
 			$echo_result="";
 			
@@ -57,7 +62,7 @@
 		}
 		public function SearchFilmsbyname($name){
 			$echo_result="";
-			$sname=addslashes($name);
+			$sname=$this->SafetyEnter($name);
 			try{
 				
 				$stmt =  $this->db->query("SELECT id , name FROM films WHERE name LIKE '%".$sname."%' ORDER BY name ASC  ");
@@ -80,7 +85,7 @@
 		}
 		public function SearchFilmsbyactor($actor){
 			$echo_result="";
-			$sactor=addslashes($actor);
+			$sactor=$this->SafetyEnter($actor);
 			try{
 				
 				$stmt =  $this->db->query("SELECT id , name FROM films WHERE actors_list LIKE '%".$sactor."%' ORDER BY name ASC  ");
@@ -126,7 +131,7 @@
 		}
 		public function AdminsSearchFilmsbyname($name){
 			$echo_result="";
-			$sname=addslashes($name);
+			$sname=$this->SafetyEnter($name);
 			try{
 				
 				$stmt =  $this->db->query("SELECT id , name FROM films WHERE name LIKE '%".$sname."%' ORDER BY name ASC  ");
@@ -149,7 +154,7 @@
 		}
 		public function AdminsSearchFilmsbyactor($actor){
 			$echo_result="";
-			$sactor=addslashes($actor);
+			$sactor=$this->SafetyEnter($actor);
 			try{
 				
 				$stmt =  $this->db->query("SELECT id , name FROM films WHERE actors_list LIKE '%".$sactor."%' ORDER BY name ASC  ");
@@ -176,10 +181,10 @@
 				//insert into database
 				$stmt = $this->db->prepare('INSERT INTO films (name, year_release, format , actors_list ) VALUES (:name, :year_release, :format , :actors_list)');
 				$stmt->execute(array(
-				':name' => $name,
+				':name' => $this->SafetyEnter($name),
 				':year_release' => $year,
 				':format' => $format,
-				':actors_list' => $actors
+				':actors_list' => $this->SafetyEnter($actors)
 				));
 				
 				
