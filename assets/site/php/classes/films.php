@@ -57,10 +57,10 @@
 		}
 		public function SearchFilmsbyname($name){
 			$echo_result="";
-			
+			$sname=addslashes($name);
 			try{
 				
-				$stmt =  $this->db->query("SELECT id , name FROM films WHERE name LIKE '%".$name."%' ORDER BY name ASC  ");
+				$stmt =  $this->db->query("SELECT id , name FROM films WHERE name LIKE '%".$sname."%' ORDER BY name ASC  ");
 				while($row = $stmt->fetch()){
 					
 					
@@ -80,10 +80,10 @@
 		}
 		public function SearchFilmsbyactor($actor){
 			$echo_result="";
-			
+			$sactor=addslashes($actor);
 			try{
 				
-				$stmt =  $this->db->query("SELECT id , name FROM films WHERE actors_list LIKE '%".$actor."%' ORDER BY name ASC  ");
+				$stmt =  $this->db->query("SELECT id , name FROM films WHERE actors_list LIKE '%".$sactor."%' ORDER BY name ASC  ");
 				while($row = $stmt->fetch()){
 					
 					
@@ -126,10 +126,10 @@
 		}
 		public function AdminsSearchFilmsbyname($name){
 			$echo_result="";
-			
+			$sname=addslashes($name);
 			try{
 				
-				$stmt =  $this->db->query("SELECT id , name FROM films WHERE name LIKE '%".$name."%' ORDER BY name ASC  ");
+				$stmt =  $this->db->query("SELECT id , name FROM films WHERE name LIKE '%".$sname."%' ORDER BY name ASC  ");
 				while($row = $stmt->fetch()){
 					
 					
@@ -149,10 +149,10 @@
 		}
 		public function AdminsSearchFilmsbyactor($actor){
 			$echo_result="";
-			
+			$sactor=addslashes($actor);
 			try{
 				
-				$stmt =  $this->db->query("SELECT id , name FROM films WHERE actors_list LIKE '%".$actor."%' ORDER BY name ASC  ");
+				$stmt =  $this->db->query("SELECT id , name FROM films WHERE actors_list LIKE '%".$sactor."%' ORDER BY name ASC  ");
 				while($row = $stmt->fetch()){
 					
 					
