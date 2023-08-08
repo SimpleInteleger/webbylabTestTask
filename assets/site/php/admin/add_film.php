@@ -16,15 +16,18 @@
 		<div class="container-fluid  ">
 			<div class="container-sm" >
 				<h1> ADD Film</h1>
-				<form action="" method="post" id="login" class="bg-black p-5 text-center rounded">
+				<form action="" method="post" id="add" class="bg-black p-5 text-center rounded">
+				<div class="form-floating mb-3 mt-3 bg-danger" id="info_error" style="display:none";>
+					<h2></h2>
+					</div>
 					<div class="form-floating mb-3 mt-3">
 						
-						<input type="name" class="form-control" id="name" placeholder="name" name="name">
+						<input type="name" class="form-control" id="name" placeholder="name" name="name" required>
 						<label for="name">Name:</label>
 					</div>
 					<div >
 						<label for="Year">Year:</label>
-						<input type="number" placeholder="YYYY" min="1850" max="2023" class="form-control" id="year"  name="year">
+						<input type="number" placeholder="YYYY" min="1850" max="2023" class="form-control" id="year"  name="year" required>
 						
 					</div>
 					<div >
@@ -44,7 +47,7 @@
 					</div>
 					<div class="mb-3 mt-3">
 						<label for="comment">Actors:</label>
-						<textarea class="form-control" rows="5" id="actors" name="actors"></textarea>
+						<textarea class="form-control" rows="5" id="actors" name="actors" required></textarea>
 					</div>
 					
 					<button type="submit" name="submit" class="btn btn-outline-primary btn-lg">ADD</button>

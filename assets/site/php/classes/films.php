@@ -8,6 +8,7 @@
 			$this->db = $db;
 		}
 		public function sortfunc($a, $b) {
+		if ( strlen($a["name"]) > 1 AND strlen($b["name"]) > 1){
 			if (strpos($this->order,$a["name"][1]) AND strpos($this->order,$b["name"][1])) {
 				if ( strpos($this->order,$a["name"][1]) == strpos($this->order,$b["name"][1])){
 					if (strpos($this->order,$a["name"][2]) AND strpos($this->order,$b["name"][2])) {
@@ -40,7 +41,7 @@
 				else if (strpos($this->order,$b["name"][1])) return 1;
 				else return 0;
 			}
-			
+		}else return 0;	
 			
 		}
 		public function SafetyEnter($string){
