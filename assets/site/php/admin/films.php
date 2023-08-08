@@ -14,6 +14,28 @@
 		<link href="../../css/bootstrap.min.css" rel="stylesheet" type="text/css">
 	</head>
 	<body>
+	<?php if(isset($_GET["added"])) { ?>
+			<div class="container-fluid bg-success pop_up_message pop_up_message_js" >
+				<div class="container-md text-center  p-5">
+					
+					<p class="h1">ADDED - <?php echo $_GET["added"] ?></p>
+					
+					
+					
+				</div>
+			</div>
+		<?php } ?>
+		<?php if(isset($_GET["deleted"])){ ?>
+			<div class="container-fluid bg-danger pop_up_message pop_up_message_js">
+				<div class="container-md text-center  p-5">
+					
+					<p class="h1">DELETED - <?php echo $_GET["deleted"] ?></p>
+					
+					
+					
+				</div>
+			</div>
+		<?php } ?>
 		<div class="container-fluid ">
 			<div class="container-md text-center">
 				
@@ -38,7 +60,7 @@
 					<?php 	
 						if(isset($_GET["delid"])){
 							$films->DelFilm($_GET["delid"]);
-							header('Location: films.php');
+							header('Location: films.php?deleted='.$_GET["delname"]);
 							exit;
 						}
 						if((isset($_GET["sname"])==False) AND (isset($_GET["sactor"])==False)){

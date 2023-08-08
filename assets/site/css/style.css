@@ -1,0 +1,6 @@
+.pop_up_message{
+	position:fixed;
+	top:40%;
+	left:0px;
+	z-index:1;
+}

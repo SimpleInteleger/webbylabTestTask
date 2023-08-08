@@ -183,7 +183,7 @@
 				$echo_result=$echo_result."<div class='card d-inline-block w-100' style='width:400px'>";
 				$echo_result=$echo_result."<div class='card-body'>";
 				$echo_result=$echo_result."<h4 class='card-title'>".$val["name"]."</h4>";
-				$echo_result=$echo_result."<a href='films.php?delid=".$val["id"]."' class='btn btn-danger' target='_black'>DELETE</a>";
+				$echo_result=$echo_result."<a href='films.php?delid=".$val["id"]."&delname=".$val["name"]."' class='btn btn-danger' target='_black'>DELETE</a>";
 				$echo_result=$echo_result."</div>";
 				$echo_result=$echo_result."</div>";
 			}
@@ -212,7 +212,7 @@
 				$echo_result=$echo_result."<div class='card d-inline-block w-100' style='width:400px'>";
 				$echo_result=$echo_result."<div class='card-body'>";
 				$echo_result=$echo_result."<h4 class='card-title'>".$val["name"]."</h4>";
-				$echo_result=$echo_result."<a href='films.php?delid=".$val["id"]."' class='btn btn-danger' target='_black'>DELETE</a>";
+				$echo_result=$echo_result."<a href='films.php?delid=".$val["id"]."&delname=".$val["name"]."' class='btn btn-danger' target='_black'>DELETE</a>";
 				$echo_result=$echo_result."</div>";
 				$echo_result=$echo_result."</div>";
 			}
@@ -241,7 +241,7 @@
 				$echo_result=$echo_result."<div class='card d-inline-block w-100' style='width:400px'>";
 				$echo_result=$echo_result."<div class='card-body'>";
 				$echo_result=$echo_result."<h4 class='card-title'>".$val["name"]."</h4>";
-				$echo_result=$echo_result."<a href='films.php?delid=".$val["id"]."' class='btn btn-danger' target='_black'>DELETE</a>";
+				$echo_result=$echo_result."<a href='films.php?delid=".$val["id"]."&delname=".$val["name"]."' class='btn btn-danger' target='_black'>DELETE</a>";
 				$echo_result=$echo_result."</div>";
 				$echo_result=$echo_result."</div>";
 			}

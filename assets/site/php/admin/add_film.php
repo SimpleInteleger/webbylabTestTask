@@ -67,7 +67,7 @@
 	if(isset($_POST['submit'])){
 		
 		$films->AddFilm($_POST["name"],$_POST["year"],$_POST["format"],$_POST["actors"]);
-		header('Location: films.php');
+		header('Location: films.php?added='.$_POST["name"]);
 		exit;
 	}
 	
