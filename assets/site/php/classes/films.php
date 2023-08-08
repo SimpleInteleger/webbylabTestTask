@@ -271,6 +271,26 @@
 			$stmt = $this->db->prepare('DELETE FROM films WHERE id = :id');
 			$stmt->execute(array(':id' => $id));
 		}
+			public function CheckFilm($name){
+		$echo_result="";
+			
+			try {
+				
+				$stmt = $this->db->prepare('SELECT id , name , year_release , format , actors_list FROM films WHERE name = :name ');
+				$stmt->execute(array(':name' => $name));
+				$data = $stmt->fetch();
+				
+				if(isset($data["name"])) {
+				$echo_result="<h1>Such Fiml already in exist</h1>";
+				}else{
+				$echo_result="OK";
+				}
+				
+				} catch(PDOException $e) {
+				echo '<p class="error">'.$e->getMessage().'</p>';
+			}
+			return $echo_result;
+			}
 		public function import($name){
 			$myfile = fopen("../../import/".$name, "r") or die("Unable to open file!");
 			// Output one line until end-of-file

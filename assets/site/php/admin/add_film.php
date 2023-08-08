@@ -66,12 +66,18 @@
 <?php
 	$log=false;
 	
-	//precess login form if submitted
+	/precess login form if submitted
 	if(isset($_POST['submit'])){
-		
+		$check = $films->CheckFilm($_POST["name"]);
+		if ($check == "OK"){ 
+	
+	
 		$films->AddFilm($_POST["name"],$_POST["year"],$_POST["format"],$_POST["actors"]);
 		header('Location: films.php?added='.$_POST["name"]);
 		exit;
+		}else{
+		echo $check;
+		}
 	}
 	
 ?>
