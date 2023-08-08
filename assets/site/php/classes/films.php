@@ -273,7 +273,7 @@
 		public function import($name){
 			$myfile = fopen("../../import/".$name, "r") or die("Unable to open file!");
 			// Output one line until end-of-file
-			
+			$count=0;
 			$string="";
 			$array=array();
 		$arrayone=array();
@@ -300,6 +300,7 @@
 		}else{
 		if($sname != "" OR $year!= "" OR $format!= "" OR $actors!= "" ){
 		$this->AddFilm($sname,$year,$format,$actors);
+		$count=$count+1;
 		$sname="";
 		$year="";
 		$format="";
@@ -310,6 +311,7 @@
 		
 		}
 		unlink("../../import/".$name);
+		return $count;
 		}
 		
 		}

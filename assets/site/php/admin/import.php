@@ -87,7 +87,8 @@
 			}
 				
 			
-			$films->import($_FILES["file"]["name"]);
+			$quanties = $films->import("record.txt");
+			echo "</br>From file added ".$quanties." films";
 			
 			}else{
 			
