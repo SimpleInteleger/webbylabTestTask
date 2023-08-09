@@ -2,6 +2,9 @@ $(document).ready(function(){
 	var href="";
 	$(".pop_up_message_js").click(function(){
 		$(this).css("display","none");
+		var url=$(location).attr('href');
+		var params=url.split("?");
+		window.location.href=params[0];
 	});
 	$(".del_hrefs a.btn-danger").click(function(e){
 		

@@ -84,7 +84,7 @@
 	
 	
 		$films->AddFilm($_POST["name"],$_POST["year"],$_POST["format"],$_POST["actors"]);
-		header('Location: films.php?added='.$_POST["name"]);
+		header('Location: films.php?added=1');
 		exit;
 		}else{
 		echo $check;
