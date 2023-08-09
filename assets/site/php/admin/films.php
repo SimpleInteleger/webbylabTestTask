@@ -77,7 +77,7 @@
 					<button type="submit" class="btn btn-outline-primary btn-lg">SEARCH BY ACTOR</button>
 				</form>
 				<a href="add_film.php" target="_black"><button type="button" class="btn btn-outline-success btn-lg">ADD</button></a>
-				<div class="container text-center">
+				<div class="container text-center del_hrefs">
 					<div class="container-fluid bg-warning pop_up_choice pop_up_choice_js" >
 						<div class="container-md text-center  p-5">
 							

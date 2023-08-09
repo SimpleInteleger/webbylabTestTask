@@ -3,7 +3,7 @@ $(document).ready(function(){
 	$(".pop_up_message_js").click(function(){
 		$(this).css("display","none");
 	});
-	$(".del_hrefs a").click(function(e){
+	$(".del_hrefs a.btn-danger").click(function(e){
 		
 		e.preventDefault();
 		$(".pop_up_choice").css("display","block");

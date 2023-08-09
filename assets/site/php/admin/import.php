@@ -65,7 +65,7 @@
 			$target_file = $target_dir . basename($_FILES["file"]["name"]);
 			$uploadOk = 1;
 			$FileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-			$target_file_new = $target_dir . $_FILES["file"]["name"]; 
+			$target_file_new = $target_dir . "record.txt"; 
 				
 			
 			

@@ -77,7 +77,7 @@
 <?php
 	$log=false;
 	
-	/precess login form if submitted
+	//precess login form if submitted
 	if(isset($_POST['submit'])){
 		$check = $films->CheckFilm($_POST["name"]);
 		if ($check == "OK"){ 
