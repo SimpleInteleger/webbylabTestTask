@@ -34,4 +34,69 @@ $(document).ready(function(){
 		}
 		
 	} );
+	$("a.page-link").click(function(event){
+		event.preventDefault();
+		var url=$(location).attr('href');
+		if(url.indexOf("?")!=-1)
+		{
+			var params=url.split("?");
+			if(url.indexOf("&")!=-1)
+			{
+			var params_array=params[1].split("&");
+				var param_array=[];
+				var param_exist=false;
+				for (let i = 0;i < params_array.length; i++) {
+					param_array = params_array[i].split("=");
+					if(param_array[0] == "pg"){
+						param_exist=true;
+						param_array[1] = $(this).attr("href");
+						params_array[i]=param_array.join("=");
+					}
+				}
+				
+				params[1]=params_array.join("&");
+				url=params.join("?");
+				
+				if (param_exist)
+				{
+					window.location.href=url;
+				}
+				else
+				{
+					url=url+"&pg="+$(this).attr("href");
+					window.location.href=url;
+				}
+			}
+			else
+			{
+				var param_array=[];
+				var param_exist=false;
+				
+					param_array = params[1].split("=");
+					if(param_array[0] == "pg"){
+						param_exist=true;
+						param_array[1] = $(this).attr("href");
+						params[1]=param_array.join("=");
+					}
+				url=params.join("?");
+				
+				if (param_exist)
+				{
+					window.location.href=url;
+				}
+				else
+				{
+					url=url+"&pg="+$(this).attr("href");
+					window.location.href=url;
+				}
+			}
+			
+		}
+		else
+		{
+			url=url+"?pg="+$(this).attr("href");
+			window.location.href=url;
+		}
+		
+		} );
 });	

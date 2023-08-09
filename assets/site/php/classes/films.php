@@ -74,19 +74,54 @@
 			return $echo_result;
 		}
 		
-		public function ShowFilms(){
-			$echo_result="";
+		public function pagination($count,$quantiti,$page,$search){
 			
+			$type="";
+			if($search == true) $type="&";
+			else $type="?";
+			$echo_data="<ul class='pagination pagination-lg justify-content-center' style='margin:20px 0'>";
+			$page_big=$page;
+			$page_amount=$quantiti/$count;
+			$page_amount_up=round($page_amount,0,PHP_ROUND_HALF_UP);
+			$page_amount_down=round($page_amount - 1 ,0,PHP_ROUND_HALF_DOWN);
+			$page_start= $page_big;
+			$page_amount_behind=$page_start/intval($count);
+			$page_amount_behind_dec=intval($page_amount_behind)-1;
+			$page_amount_behind_inc=intval($page_amount_behind)+1;
+			$page_amount_front=round(abs($page_amount-$page_amount_behind),0,PHP_ROUND_HALF_DOWN);
+			if ($page_amount_behind > 2) {
+				$echo_data=$echo_data." <li class='page-item'><a class='page-link' href='0' >&#171;</a></li>";
+			} 
+			if ($page_amount_behind > 1) {
+				$echo_data=$echo_data."<li class='page-item'><a class='page-link' href='".$page_amount_behind_dec."'>&#60;</a></li>";
+			} 
+			$echo_data=$echo_data."<li class='page-item disabled'><a class='page-link' href='".$page_amount_behind."'>$page_amount_behind</a></li>";
+			if ($page_amount_front > 1) {
+				$echo_data=$echo_data."<li class='page-item'><a class='page-link' href='".$page_amount_behind_inc."'>&#62;</a></li>";
+			} 
+			if ($page_amount_front > 2) {
+				$echo_data=$echo_data."<li class='page-item'><a class='page-link' href='".$page_amount_down."'>&#187;</a></li>";
+			} 
+			$echo_data=$echo_data."</ul>";
+			return $echo_data;
+		}
+		
+		public function ShowFilms($count){
+			$echo_result="";
+			$numbers=0;
 			$films=array();
 			try{
-				
-				$stmt =  $this->db->query("SELECT id , name FROM films ORDER BY name ASC  ");
+				$stmt1 =  $this->db->query("SELECT id , name FROM films ORDER BY name ASC ");
+				while($row1 = $stmt1->fetch()){
+					$numbers = $numbers +1;	
+				}
+				} catch(PDOException $e) {
+				echo $e->getMessage();
+			}
+			try{
+				$stmt =  $this->db->query("SELECT id , name FROM films ORDER BY name ASC LIMIT $count OFFSET 0 ");
 				while($row = $stmt->fetch()){
 					array_push($films,$row);
-					
-					
-					
-					
 				}
 				} catch(PDOException $e) {
 				echo $e->getMessage();
@@ -101,15 +136,60 @@
 				$echo_result=$echo_result."</div>";
 				$echo_result=$echo_result."</div>";
 			}
+			$echo_result=$echo_result.$this->pagination($count,$numbers,0,false);
 			return $echo_result;
 		}
-		public function SearchFilmsbyname($name){
+		public function PagedShowFilms($count,$pg){
+		$page = $pg*$count;
 			$echo_result="";
+			$numbers=0;
+			$films=array();
+			try{
+				$stmt1 =  $this->db->query("SELECT id , name FROM films ORDER BY name ASC ");
+				while($row1 = $stmt1->fetch()){
+					$numbers = $numbers +1;	
+				}
+				} catch(PDOException $e) {
+				echo $e->getMessage();
+			}
+			try{
+				$stmt =  $this->db->query("SELECT id , name FROM films ORDER BY name ASC LIMIT $count OFFSET $page ");
+				while($row = $stmt->fetch()){
+					array_push($films,$row);
+				}
+				} catch(PDOException $e) {
+				echo $e->getMessage();
+			}
+			uasort($films, array($this, 'sortfunc'));
+			
+			foreach($films as $val){
+				$echo_result=$echo_result."<div class='card d-inline-block w-100' style='width:400px'>";
+				$echo_result=$echo_result."<div class='card-body'>";
+				$echo_result=$echo_result."<h4 class='card-title'>".$val["name"]."</h4>";
+				$echo_result=$echo_result."<a href='film.php?id=".$val["id"]."' class='btn btn-primary' target='_black'>More info</a>";
+				$echo_result=$echo_result."</div>";
+				$echo_result=$echo_result."</div>";
+			}
+			$echo_result=$echo_result.$this->pagination($count,$numbers,$page,false);
+			return $echo_result;
+		}
+		
+		public function SearchFilmsbyname($name,$count){
+			$echo_result="";
+			$numbers=0;
 			$sname=$this->SafetyEnter($name);
 			$films=array();
 			try{
+				$stmt1 =  $this->db->query("SELECT id , name FROM films WHERE name LIKE '%".$sname."%' ORDER BY name ASC ");
+				while($row1 = $stmt1->fetch()){
+					$numbers = $numbers +1;	
+				}
+				} catch(PDOException $e) {
+				echo $e->getMessage();
+			}
+			try{
 				
-				$stmt =  $this->db->query("SELECT id , name FROM films WHERE name LIKE '%".$sname."%' ORDER BY name ASC  ");
+				$stmt =  $this->db->query("SELECT id , name FROM films WHERE name LIKE '%".$sname."%' ORDER BY name ASC LIMIT $count OFFSET 0 ");
 				while($row = $stmt->fetch()){
 					array_push($films,$row);
 					
@@ -130,73 +210,26 @@
 				$echo_result=$echo_result."</div>";
 				$echo_result=$echo_result."</div>";
 			}
+			$echo_result=$echo_result.$this->pagination($count,$numbers,0,true);
 			return $echo_result;
 		}
-		public function SearchFilmsbyactor($actor){
+		public function PagedSearchFilmsbyname($name,$count,$pg){
+		$page = $pg*$count;
 			$echo_result="";
-			$sactor=$this->SafetyEnter($actor);
-			$films=array();
-			try{
-				
-				$stmt =  $this->db->query("SELECT id , name FROM films WHERE actors_list LIKE '%".$sactor."%' ORDER BY name ASC  ");
-				while($row = $stmt->fetch()){
-					array_push($films,$row);
-					
-					
-					
-					
-				}
-				} catch(PDOException $e) {
-				echo $e->getMessage();
-			}
-			uasort($films, array($this, 'sortfunc'));
-			
-			foreach($films as $val){
-				$echo_result=$echo_result."<div class='card d-inline-block w-100' style='width:400px'>";
-				$echo_result=$echo_result."<div class='card-body'>";
-				$echo_result=$echo_result."<h4 class='card-title'>".$val["name"]."</h4>";
-				$echo_result=$echo_result."<a href='film.php?id=".$val["id"]."' class='btn btn-primary' target='_black'>More info</a>";
-				$echo_result=$echo_result."</div>";
-				$echo_result=$echo_result."</div>";
-			}
-			return $echo_result;
-		}
-		public function AdminsShowFilms(){
-			$echo_result="";
-			
-			$films=array();
-			try{
-				
-				$stmt =  $this->db->query("SELECT id , name FROM films ORDER BY name ASC  ");
-				while($row = $stmt->fetch()){
-					array_push($films,$row);
-					
-					
-					
-					
-				}
-				} catch(PDOException $e) {
-				echo $e->getMessage();
-			}
-			uasort($films, array($this, 'sortfunc'));
-			
-			foreach($films as $val){
-				$echo_result=$echo_result."<div class='card d-inline-block w-100' style='width:400px'>";
-				$echo_result=$echo_result."<div class='card-body'>";
-				$echo_result=$echo_result."<h4 class='card-title'>".$val["name"]."</h4>";
-				$echo_result=$echo_result."<a href='films.php?delid=".$val["id"]."&delname=".$val["name"]."' class='btn btn-danger' target='_black'>DELETE</a>";
-				$echo_result=$echo_result."</div>";
-				$echo_result=$echo_result."</div>";
-			}
-			return $echo_result;
-		}
-		public function AdminsSearchFilmsbyname($name){
-			$echo_result="";
+			$numbers=0;
 			$sname=$this->SafetyEnter($name);
 			$films=array();
 			try{
+				$stmt1 =  $this->db->query("SELECT id , name FROM films WHERE name LIKE '%".$sname."%' ORDER BY name ASC ");
+				while($row1 = $stmt1->fetch()){
+					$numbers = $numbers +1;	
+				}
+				} catch(PDOException $e) {
+				echo $e->getMessage();
+			}
+			try{
 				
-				$stmt =  $this->db->query("SELECT id , name FROM films WHERE name LIKE '%".$sname."%' ORDER BY name ASC  ");
+				$stmt =  $this->db->query("SELECT id , name FROM films WHERE name LIKE '%".$sname."%' ORDER BY name ASC LIMIT $count OFFSET $page ");
 				while($row = $stmt->fetch()){
 					array_push($films,$row);
 					
@@ -213,19 +246,185 @@
 				$echo_result=$echo_result."<div class='card d-inline-block w-100' style='width:400px'>";
 				$echo_result=$echo_result."<div class='card-body'>";
 				$echo_result=$echo_result."<h4 class='card-title'>".$val["name"]."</h4>";
-				$echo_result=$echo_result."<a href='films.php?delid=".$val["id"]."&delname=".$val["name"]."' class='btn btn-danger' target='_black'>DELETE</a>";
+				$echo_result=$echo_result."<a href='film.php?id=".$val["id"]."' class='btn btn-primary' target='_black'>More info</a>";
 				$echo_result=$echo_result."</div>";
 				$echo_result=$echo_result."</div>";
 			}
+			$echo_result=$echo_result.$this->pagination($count,$numbers,$page,true);
 			return $echo_result;
 		}
-		public function AdminsSearchFilmsbyactor($actor){
+		public function SearchFilmsbyactor($actor,$count){
 			$echo_result="";
+			$numbers=0;
 			$sactor=$this->SafetyEnter($actor);
 			$films=array();
 			try{
+				$stmt1 =  $this->db->query("SELECT id , name FROM films WHERE actors_list LIKE '%".$sactor."%' ORDER BY name ASC ");
+				while($row1 = $stmt1->fetch()){
+					$numbers = $numbers +1;	
+				}
+				} catch(PDOException $e) {
+				echo $e->getMessage();
+			}
+			try{
 				
-				$stmt =  $this->db->query("SELECT id , name FROM films WHERE actors_list LIKE '%".$sactor."%' ORDER BY name ASC  ");
+				$stmt =  $this->db->query("SELECT id , name FROM films WHERE actors_list LIKE '%".$sactor."%' ORDER BY name ASC LIMIT $count OFFSET 0 ");
+				while($row = $stmt->fetch()){
+					array_push($films,$row);
+					
+					
+					
+					
+				}
+				} catch(PDOException $e) {
+				echo $e->getMessage();
+			}
+			uasort($films, array($this, 'sortfunc'));
+			
+			foreach($films as $val){
+				$echo_result=$echo_result."<div class='card d-inline-block w-100' style='width:400px'>";
+				$echo_result=$echo_result."<div class='card-body'>";
+				$echo_result=$echo_result."<h4 class='card-title'>".$val["name"]."</h4>";
+				$echo_result=$echo_result."<a href='film.php?id=".$val["id"]."' class='btn btn-primary' target='_black'>More info</a>";
+				$echo_result=$echo_result."</div>";
+				$echo_result=$echo_result."</div>";
+			}
+			$echo_result=$echo_result.$this->pagination($count,$numbers,0,true);
+			return $echo_result;
+		}
+		public function PagedSearchFilmsbyactor($actor,$count,$pg){
+		$page = $pg*$count;
+			$echo_result="";
+			$numbers=0;
+			$sactor=$this->SafetyEnter($actor);
+			$films=array();
+			try{
+				$stmt1 =  $this->db->query("SELECT id , name FROM films WHERE actors_list LIKE '%".$sactor."%' ORDER BY name ASC ");
+				while($row1 = $stmt1->fetch()){
+					$numbers = $numbers +1;	
+				}
+				} catch(PDOException $e) {
+				echo $e->getMessage();
+			}
+			try{
+				
+				$stmt =  $this->db->query("SELECT id , name FROM films WHERE actors_list LIKE '%".$sactor."%' ORDER BY name ASC LIMIT $count OFFSET $page ");
+				while($row = $stmt->fetch()){
+					array_push($films,$row);
+					
+					
+					
+					
+				}
+				} catch(PDOException $e) {
+				echo $e->getMessage();
+			}
+			uasort($films, array($this, 'sortfunc'));
+			
+			foreach($films as $val){
+				$echo_result=$echo_result."<div class='card d-inline-block w-100' style='width:400px'>";
+				$echo_result=$echo_result."<div class='card-body'>";
+				$echo_result=$echo_result."<h4 class='card-title'>".$val["name"]."</h4>";
+				$echo_result=$echo_result."<a href='film.php?id=".$val["id"]."' class='btn btn-primary' target='_black'>More info</a>";
+				$echo_result=$echo_result."</div>";
+				$echo_result=$echo_result."</div>";
+			}
+			$echo_result=$echo_result.$this->pagination($count,$numbers,$page,true);
+			return $echo_result;
+		}
+		public function AdminsShowFilms($count){
+			$echo_result="";
+			$numbers=0;
+			$films=array();
+			try{
+				$stmt1 =  $this->db->query("SELECT id , name FROM films ORDER BY name ASC ");
+				while($row1 = $stmt1->fetch()){
+					$numbers = $numbers +1;	
+				}
+				} catch(PDOException $e) {
+				echo $e->getMessage();
+			}
+			try{
+				
+				$stmt =  $this->db->query("SELECT id , name FROM films ORDER BY name ASC LIMIT $count OFFSET 0 ");
+				while($row = $stmt->fetch()){
+					array_push($films,$row);
+					
+					
+					
+					
+				}
+				} catch(PDOException $e) {
+				echo $e->getMessage();
+			}
+			uasort($films, array($this, 'sortfunc'));
+			
+			foreach($films as $val){
+				$echo_result=$echo_result."<div class='card d-inline-block w-100' style='width:400px'>";
+				$echo_result=$echo_result."<div class='card-body'>";
+				$echo_result=$echo_result."<h4 class='card-title'>".$val["name"]."</h4>";
+				$echo_result=$echo_result."<a href='films.php?delid=".$val["id"]."&delname=".$val["name"]."'  class='btn btn-danger' target='_black'>DELETE</a>";
+				$echo_result=$echo_result."</div>";
+				$echo_result=$echo_result."</div>";
+			}
+			$echo_result=$echo_result.$this->pagination($count,$numbers,0,false);
+			return $echo_result;
+		}
+		public function PagedAdminsShowFilms($count,$pg){
+		$page = $pg*$count;
+			$echo_result="";
+			$numbers=0;
+			$films=array();
+			try{
+				$stmt1 =  $this->db->query("SELECT id , name FROM films ORDER BY name ASC ");
+				while($row1 = $stmt1->fetch()){
+					$numbers = $numbers +1;	
+				}
+				} catch(PDOException $e) {
+				echo $e->getMessage();
+			}
+			try{
+				
+				$stmt =  $this->db->query("SELECT id , name FROM films ORDER BY name ASC LIMIT $count OFFSET $page ");
+				while($row = $stmt->fetch()){
+					array_push($films,$row);
+					
+					
+					
+					
+				}
+				} catch(PDOException $e) {
+				echo $e->getMessage();
+			}
+			uasort($films, array($this, 'sortfunc'));
+			
+			foreach($films as $val){
+				$echo_result=$echo_result."<div class='card d-inline-block w-100' style='width:400px'>";
+				$echo_result=$echo_result."<div class='card-body'>";
+				$echo_result=$echo_result."<h4 class='card-title'>".$val["name"]."</h4>";
+				$echo_result=$echo_result."<a href='films.php?delid=".$val["id"]."&delname=".$val["name"]."'  class='btn btn-danger' target='_black'>DELETE</a>";
+				$echo_result=$echo_result."</div>";
+				$echo_result=$echo_result."</div>";
+			}
+			$echo_result=$echo_result.$this->pagination($count,$numbers,$page,false);
+			return $echo_result;
+		}
+		public function AdminsSearchFilmsbyname($name,$count){
+			$echo_result="";
+			$numbers=0;
+			$sname=$this->SafetyEnter($name);
+			$films=array();
+			try{
+				$stmt1 =  $this->db->query("SELECT id , name FROM films WHERE name LIKE '%".$sname."%' ORDER BY name ASC ");
+				while($row1 = $stmt1->fetch()){
+					$numbers = $numbers +1;	
+				}
+				} catch(PDOException $e) {
+				echo $e->getMessage();
+			}
+			try{
+				
+				$stmt =  $this->db->query("SELECT id , name FROM films WHERE name LIKE '%".$sname."%' ORDER BY name ASC LIMIT $count OFFSET 0 ");
 				while($row = $stmt->fetch()){
 					array_push($films,$row);
 					
@@ -246,6 +445,126 @@
 				$echo_result=$echo_result."</div>";
 				$echo_result=$echo_result."</div>";
 			}
+			$echo_result=$echo_result.$this->pagination($count,$numbers,0,true);
+			return $echo_result;
+		}
+		public function PagedAdminsSearchFilmsbyname($name,$count,$pg){
+		$page = $pg*$count;
+			$echo_result="";
+			$numbers=0;
+			$sname=$this->SafetyEnter($name);
+			$films=array();
+			try{
+				$stmt1 =  $this->db->query("SELECT id , name FROM films WHERE name LIKE '%".$sname."%' ORDER BY name ASC ");
+				while($row1 = $stmt1->fetch()){
+					$numbers = $numbers +1;	
+				}
+				} catch(PDOException $e) {
+				echo $e->getMessage();
+			}
+			try{
+				
+				$stmt =  $this->db->query("SELECT id , name FROM films WHERE name LIKE '%".$sname."%' ORDER BY name ASC LIMIT $count OFFSET $page ");
+				while($row = $stmt->fetch()){
+					array_push($films,$row);
+					
+					
+					
+					
+				}
+				} catch(PDOException $e) {
+				echo $e->getMessage();
+			}
+			uasort($films, array($this, 'sortfunc'));
+			
+			foreach($films as $val){
+				$echo_result=$echo_result."<div class='card d-inline-block w-100' style='width:400px'>";
+				$echo_result=$echo_result."<div class='card-body'>";
+				$echo_result=$echo_result."<h4 class='card-title'>".$val["name"]."</h4>";
+				$echo_result=$echo_result."<a href='films.php?delid=".$val["id"]."&delname=".$val["name"]."' class='btn btn-danger' target='_black'>DELETE</a>";
+				$echo_result=$echo_result."</div>";
+				$echo_result=$echo_result."</div>";
+			}
+			$echo_result=$echo_result.$this->pagination($count,$numbers,$page,true);
+			return $echo_result;
+		}
+		public function AdminsSearchFilmsbyactor($actor,$count){
+			$echo_result="";
+			$numbers=0;
+			$sactor=$this->SafetyEnter($actor);
+			$films=array();
+			try{
+				$stmt1 =  $this->db->query("SELECT id , name FROM films WHERE actors_list LIKE '%".$sactor."%' ORDER BY name ASC ");
+				while($row1 = $stmt1->fetch()){
+					$numbers = $numbers +1;	
+				}
+				} catch(PDOException $e) {
+				echo $e->getMessage();
+			}
+			try{
+				
+				$stmt =  $this->db->query("SELECT id , name FROM films WHERE actors_list LIKE '%".$sactor."%' ORDER BY name ASC LIMIT $count OFFSET 0 ");
+				while($row = $stmt->fetch()){
+					array_push($films,$row);
+					
+					
+					
+					
+				}
+				} catch(PDOException $e) {
+				echo $e->getMessage();
+			}
+			uasort($films, array($this, 'sortfunc'));
+			
+			foreach($films as $val){
+				$echo_result=$echo_result."<div class='card d-inline-block w-100' style='width:400px'>";
+				$echo_result=$echo_result."<div class='card-body'>";
+				$echo_result=$echo_result."<h4 class='card-title'>".$val["name"]."</h4>";
+				$echo_result=$echo_result."<a href='films.php?delid=".$val["id"]."&delname=".$val["name"]."' class='btn btn-danger' target='_black'>DELETE</a>";
+				$echo_result=$echo_result."</div>";
+				$echo_result=$echo_result."</div>";
+			}
+			$echo_result=$echo_result.$this->pagination($count,$numbers,0,true);
+			return $echo_result;
+		}
+		public function PagedAdminsSearchFilmsbyactor($actor,$count,$pg){
+		$page = $pg*$count;
+			$echo_result="";
+			$numbers=0;
+			$sactor=$this->SafetyEnter($actor);
+			$films=array();
+			try{
+				$stmt1 =  $this->db->query("SELECT id , name FROM films WHERE actors_list LIKE '%".$sactor."%' ORDER BY name ASC ");
+				while($row1 = $stmt1->fetch()){
+					$numbers = $numbers +1;	
+				}
+				} catch(PDOException $e) {
+				echo $e->getMessage();
+			}
+			try{
+				
+				$stmt =  $this->db->query("SELECT id , name FROM films WHERE actors_list LIKE '%".$sactor."%' ORDER BY name ASC LIMIT $count OFFSET $page ");
+				while($row = $stmt->fetch()){
+					array_push($films,$row);
+					
+					
+					
+					
+				}
+				} catch(PDOException $e) {
+				echo $e->getMessage();
+			}
+			uasort($films, array($this, 'sortfunc'));
+			
+			foreach($films as $val){
+				$echo_result=$echo_result."<div class='card d-inline-block w-100' style='width:400px'>";
+				$echo_result=$echo_result."<div class='card-body'>";
+				$echo_result=$echo_result."<h4 class='card-title'>".$val["name"]."</h4>";
+				$echo_result=$echo_result."<a href='films.php?delid=".$val["id"]."&delname=".$val["name"]."' class='btn btn-danger' target='_black'>DELETE</a>";
+				$echo_result=$echo_result."</div>";
+				$echo_result=$echo_result."</div>";
+			}
+			$echo_result=$echo_result.$this->pagination($count,$numbers,$page,true);
 			return $echo_result;
 		}
 		

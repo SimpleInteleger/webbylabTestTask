@@ -47,17 +47,34 @@
 				<div class="container text-center">
 					
 					<?php 	
-						if((isset($_GET["sname"])==False) AND (isset($_GET["sactor"])==False)){
-							echo ($films->ShowFilms());
+						if(isset($_GET["pg"])){
+					if((isset($_GET["sname"])==False) AND (isset($_GET["sactor"])==False)){
+							echo ($films->PagedShowFilms(10,$_GET["pg"]));
 						}
 						else
 						{
 							if(isset($_GET["sname"])){
-								echo ($films->SearchFilmsbyname($_GET["sname"]));
+								echo ($films->PagedSearchFilmsbyname($_GET["sname"],10,$_GET["pg"]));
 							}
 							if(isset($_GET["sactor"])){
-								echo ($films->SearchFilmsbyactor($_GET["sactor"]));
+								echo ($films->PagedSearchFilmsbyactor($_GET["sactor"],10,$_GET["pg"]));
 							}
+						}
+					}
+					else
+						{
+						if((isset($_GET["sname"])==False) AND (isset($_GET["sactor"])==False)){
+							echo ($films->ShowFilms(10));
+						}
+						else
+						{
+							if(isset($_GET["sname"])){
+								echo ($films->SearchFilmsbyname($_GET["sname"],10));
+							}
+							if(isset($_GET["sactor"])){
+								echo ($films->SearchFilmsbyactor($_GET["sactor"],10));
+							}
+						}
 						}
 					?>
 				</div>

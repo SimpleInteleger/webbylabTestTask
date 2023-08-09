@@ -94,16 +94,33 @@
 							header('Location: films.php?deleted='.$_GET["delname"]);
 							exit;
 						}
-						if((isset($_GET["sname"])==False) AND (isset($_GET["sactor"])==False)){
-							echo ($films->AdminsShowFilms());
+						if(isset($_GET["pg"])){
+							if((isset($_GET["sname"])==False) AND (isset($_GET["sactor"])==False)){
+								echo ($films->PagedAdminsShowFilms(10,$_GET["pg"]));
+							}
+							else
+							{
+								if(isset($_GET["sname"])){
+									echo ($films->PagedAdminsSearchFilmsbyname($_GET["sname"],10,$_GET["pg"]));
+								}
+								if(isset($_GET["sactor"])){
+									echo ($films->PagedAdminsSearchFilmsbyactor($_GET["sactor"],10,$_GET["pg"]));
+								}
+							}
 						}
 						else
 						{
-							if(isset($_GET["sname"])){
-								echo ($films->AdminsSearchFilmsbyname($_GET["sname"]));
+							if((isset($_GET["sname"])==False) AND (isset($_GET["sactor"])==False)){
+								echo ($films->AdminsShowFilms(10));
 							}
-							if(isset($_GET["sactor"])){
-								echo ($films->AdminsSearchFilmsbyactor($_GET["sactor"]));
+							else
+							{
+								if(isset($_GET["sname"])){
+									echo ($films->AdminsSearchFilmsbyname($_GET["sname"],10));
+								}
+								if(isset($_GET["sactor"])){
+									echo ($films->AdminsSearchFilmsbyactor($_GET["sactor"],10));
+								}
 							}
 						}
 					?>
