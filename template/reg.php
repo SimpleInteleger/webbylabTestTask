@@ -4,7 +4,7 @@
 <html lang="ua">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>Films Test</title>
+		<title>Regestration</title>
 		<meta name="viewport" content="width=device-width">
 		<meta name="viewport" content="initial-scale=1, maximum-scale=1">
 		
@@ -15,8 +15,8 @@
 	
 		<div class="container-fluid  ">
 			<div class="container-sm" >
-				<h1>Registration</h1>
-				<form action="" method="post" id="login" class="bg-black p-5 text-center rounded">
+				
+				<form action="" method="post" id="reg" class="bg-black p-5 text-center rounded">
 					<div class="form-floating mb-3 mt-3">
 						
 						<input type="name" class="form-control" id="name" placeholder="name" name="name" required>
@@ -27,15 +27,10 @@
 						<input type="password" class="form-control" id="pwd" placeholder="password" name="pwd" required>
 						<label for="pwd">Password:</label>
 					</div>
-					<button type="submit" name="submit" class="btn btn-outline-primary btn-lg">LOGIN</button>
+					<button type="submit" name="submit" class="btn btn-outline-primary btn-lg">SEND</button>
 				</form>
 			</div>	
 		</div>
-		<ul class="nav">
-  <li class="nav-item">
-    <a class="nav-link" href="reg.php">Do you want registration?</a>
-  </li>
-  </ul>
 		
 		
 		
@@ -46,7 +41,7 @@
 	</body>
 </html>	
 <?php
-	$log=false;
+	
 	
 	//precess login form if submitted
 	if(isset($_POST['submit'])){
@@ -55,16 +50,16 @@
 		$name = $_POST['name'];
 		$password = $_POST['pwd'];
 		
-		if($user->login($name,$password)){
-			$log=true;
+		if($user->AddUser($name,$password)){
+			
 			
 			//logged is return to index page
-			header('Location: inside/index.php');
+			header('Location: index.php');
 			exit;
 			
 			
 			} else {
-			$message = '<p class="alert-warning p-2 text-center"><strong>Wrong username or password<strong></p>';
+			$message = '<p class="alert-warning p-2 text-center"><strong>Problem Such User already exist<strong></p>';
 		}
 		
 	}//end if submit

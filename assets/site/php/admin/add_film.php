@@ -1,4 +1,5 @@
 <?php require_once('../includes/config.php');
+	if(!$user->is_logged_in()){ header('Location: ../../../../template/index.php'); }	
 ?>
 <!DOCTYPE html>
 <html lang="ua">
