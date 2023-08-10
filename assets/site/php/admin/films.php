@@ -40,7 +40,7 @@
 			<div class="container-fluid bg-success pop_up_message pop_up_message_js" >
 				<div class="container-md text-center  p-5">
 					
-					<p class="h1">ADDED</p>
+					<p class="h1">ADDED - <?php echo $_GET["added"] ?></p>
 					
 					
 					
@@ -51,7 +51,7 @@
 			<div class="container-fluid bg-danger pop_up_message pop_up_message_js">
 				<div class="container-md text-center  p-5">
 					
-					<p class="h1">DELETED</p>
+					<p class="h1">DELETED - <?php echo $_GET["deleted"] ?></p>
 					
 					
 					
@@ -91,7 +91,7 @@
 					<?php 	
 						if(isset($_GET["delid"])){
 							$films->DelFilm($_GET["delid"]);
-							header('Location: films.php?deleted=1');
+							header('Location: films.php?deleted='.$_GET["delname"]);
 							exit;
 						}
 						if(isset($_GET["pg"])){
